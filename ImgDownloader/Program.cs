@@ -11,6 +11,8 @@ namespace ImgDownloader
 {
     class Program
     {
+        // file path to save
+        static string folder = @"D:\img\";
         // R:3020, SR:3030, SSR:3040
         static string temp = "3020";
 
@@ -18,19 +20,23 @@ namespace ImgDownloader
 
         static string[] size = { "s", "m", "f", "detail", "zoom" };
 
+
         static void Main(string[] args)
         {
+
+            // Check file exist
             Parallel.For(0, 1000, new ParallelOptions { MaxDegreeOfParallelism = 10 }, i =>
             {
                 var uri = "http://game-a1.granbluefantasy.jp/assets/img/sp/assets/npc/s/" + temp + String.Format("{0:D3}", i) + "000_01.jpg";
-                CheckURL(i, uri, @"D:\img\s\" + temp + String.Format("{0:D3}", i) + "_01.jpg");
+                CheckURL(i, uri, folder + @"s\" + temp + String.Format("{0:D3}", i) + "_01.jpg");
             });
             Console.WriteLine("Checked");
             Thread.Sleep(1000);
 
+            // Download
             for (int i = 0; i < size.Count(); i++)
             {
-                var path = @"D:\img\" + size[i]; 
+                var path = folder + size[i]; 
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
                 try
                 {
