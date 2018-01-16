@@ -11,8 +11,11 @@ namespace ImgDownloader
 {
     class Program
     {
+        // R:3020, SR:3030, SSR:3040
         static string temp = "3020";
+
         static List<int> successL = new List<int>();
+
         static string[] size = { "s", "m", "f", "detail", "zoom" };
 
         static void Main(string[] args)
