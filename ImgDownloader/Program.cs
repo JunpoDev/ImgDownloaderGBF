@@ -15,6 +15,7 @@ namespace ImgDownloader
         static string folder = @"D:\img\";
         // R:3020, SR:3030, SSR:3040
         static string[] rares = { "3020", "3030", "3040" };
+        static int newCnt = 0;
 
         static List<int> successL;
 
@@ -38,7 +39,7 @@ namespace ImgDownloader
                 // Download
                 for (int i = 0; i < size.Count(); i++)
                 {
-                    var path = folder + size[i] + @"\" + rare + @"\";
+                    var path = folder + rare + @"\" + size[i] + @"\";
                     if (!Directory.Exists(path)) Directory.CreateDirectory(path);
                     try
                     {
@@ -64,14 +65,17 @@ namespace ImgDownloader
                     }
                 }
             }
-            
 
-            Console.WriteLine("Finished");
+
+            Console.WriteLine("Finished : Saved " + newCnt + " image(s).");
             Console.ReadLine();
 
         }
         static bool DownloadImg(string imgUri, string outputPath)
         {
+            // check exist file
+            if (File.Exists(outputPath)) return true;
+
             var client = new HttpClient();
 
             var cnt = 0;
@@ -85,7 +89,8 @@ namespace ImgDownloader
                         using (var fileStream = File.Create(outputPath))
                         using (var httpStream = res.Content.ReadAsStreamAsync().Result)
                             httpStream.CopyTo(fileStream);
-                        Console.WriteLine("Success at" + outputPath);
+                        Console.WriteLine("Saved at : " + outputPath);
+                        newCnt++;
                         return true;
                     }
                     else
@@ -112,7 +117,7 @@ namespace ImgDownloader
                     if (res.IsSuccessStatusCode)
                     {
                         successL.Add(i);
-                        Console.WriteLine("Add List : " + i);
+                        // Console.WriteLine("Add List : " + i);
                         return;
                     }
                     else
